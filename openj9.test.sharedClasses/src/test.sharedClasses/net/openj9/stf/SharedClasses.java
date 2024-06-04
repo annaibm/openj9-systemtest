@@ -186,7 +186,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		// See whether the test data (20000 classes and jars) already exist.
 		// If not, create them in the first -systemtest-prereqs directory (or the default location if no -systemtest-prereqs were supplied).
 		DirectoryRef sharedClassesDataDir = null;   // This will be initialised when we find it.
-		String javaVersion = environmentCore.getJavaVersion();
+		String javaVersion = StfSharedClassesExtension.getJavaVersion(test);
 		System.out.println("java.version = " + javaVersion);
 		String[] versionStrings = javaVersion.split("\\D+", 2);
 		int majorVersion = Integer.parseInt(versionStrings[0]);
