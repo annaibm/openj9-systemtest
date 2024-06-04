@@ -186,11 +186,11 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		// See whether the test data (20000 classes and jars) already exist.
 		// If not, create them in the first -systemtest-prereqs directory (or the default location if no -systemtest-prereqs were supplied).
 		DirectoryRef sharedClassesDataDir = null;   // This will be initialised when we find it.
-		String javaVersion = StfSharedClassesExtension.getJavaVersion(test);
+		String javaVersion = System.getProperty("java.version");
 		System.out.println("java.version = " + javaVersion);
 		String[] versionStrings = javaVersion.split("\\D+", 2);
 		int majorVersion = Integer.parseInt(versionStrings[0]);
-		String dataSubdir = "sharedClassesTestData/v1" + "/" + majorVersion;
+		String dataSubdir = "sharedClassesTestData/v1";
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
 		int found = 0;
 		for (int i = 0 ; (i < prereqRoots.size()) && ( found == 0 ); i++ ) {
@@ -225,7 +225,8 @@ public class SharedClasses implements SharedClassesPluginInterface {
 			DirectoryRef localSharedClassesJarsDir = test.doCpDir("Copy sharedClasses jars", appsSharedClassesJarsDir, test.env().getTmpDir().childDirectory("jars"));
 			localSharedClassesResources = localSharedClassesJarsDir.getSpec();
 		} else {
-			FileRef sharedClassesJar = sharedClassesDataDir.childFile("classes.jar");
+			String classFileName = "classes-" + javaVersion + ".jar";
+			FileRef sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
 			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJar, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
 		}
