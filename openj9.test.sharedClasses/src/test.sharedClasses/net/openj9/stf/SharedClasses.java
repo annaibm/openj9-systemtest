@@ -187,8 +187,9 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		// If not, create them in the first -systemtest-prereqs directory (or the default location if no -systemtest-prereqs were supplied).
 		DirectoryRef sharedClassesDataDir = null;   // This will be initialised when we find it.
 		String javaVersion = System.getProperty("java.version");
-		String[] versionStrings = javaVersion.split("\\D+", 2); // Split at the first non-digit, limit to 2 parts
-		int majorVersion = Integer.parseInt(versionStrings[0]); // The first part will be the major version number
+		System.out.println("java.version = " + javaVersion);
+		String[] versionStrings = javaVersion.split("\\D+", 2);
+		int majorVersion = Integer.parseInt(versionStrings[0]);
 		String dataSubdir = "sharedClassesTestData/v1" + "/" + majorVersion;
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
 		int found = 0;
