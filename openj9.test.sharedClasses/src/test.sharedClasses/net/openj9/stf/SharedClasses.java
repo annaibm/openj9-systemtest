@@ -191,25 +191,33 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		int javaVersion = test.env().primaryJvm().getJavaVersion();
 		System.out.println("Tmp dir:" + test.env().getTmpDir());
 		System.out.println("java.version = " + javaVersion);
-		//String[] versionStrings = javaVersion.split("\\D+", 2);
-		//int majorVersion = Integer.parseInt(versionStrings[0]);
+
 		String dataSubdir = "sharedClassesTestData/v1";
-		String classFileName = "classes-" + javaVersion + ".jar";
+		String originalFileName = "classes-" + javaVersion + ".jar";
+		String newFileName = "classes-jvm" + javaVersion + ".jar"; // New filename with JVM version
+
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
 		int found = 0;
-		for (int i = 0 ; (i < prereqRoots.size()) && ( found == 0 ); i++ ) {
+		for (int i = 0; i < prereqRoots.size() && found == 0; i++) {
 			sharedClassesDataDir = prereqRoots.get(i).childDirectory(dataSubdir);
-			sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
+			sharedClassesJar = sharedClassesDataDir.childFile(originalFileName);
 			if (!sharedClassesJar.exists()) {
 				System.out.println(sharedClassesJar.getSpec() + " does not exist");
-			}
-			else {
+			} else {
 				System.out.println(sharedClassesJar.getSpec() + " exists");
-				found = 1;
+				// Rename the file here
+				FileRef newSharedClassesJar = sharedClassesDataDir.childFile(newFileName);
+				if (sharedClassesJar.renameTo(newSharedClassesJar)) {
+					System.out.println("Successfully renamed " + originalFileName + " to " + newFileName);
+					sharedClassesJar = newSharedClassesJar; // Update reference to the new file name
+					found = 1;
+				} else {
+					System.out.println("Failed to rename " + originalFileName + " to " + newFileName);
+				}
 			}
 		}
 
-		if ( found == 0 ) {
+		if (found == 0) {
 			sharedClassesDataDir = prereqRoots.get(0).childDirectory(dataSubdir);
 			test.doRunForegroundProcess("Create Shared Classes jars",
 					"CSC",
@@ -231,8 +239,8 @@ public class SharedClasses implements SharedClassesPluginInterface {
 			localSharedClassesResources = localSharedClassesJarsDir.getSpec();
 		} else {
 			System.out.println("classes name :" + classFileName);
-			DirectoryRef sharedClassesJarDir = sharedClassesDataDir.childDirectory(classFileName);
-			DirectoryRef localSharedClassesJarDir = test.doCp("Copy sharedClasses jar", sharedClassesJarDir, test.env().getTmpDir());
+			sharedClassesJar = sharedClassesDataDir.childFile(newFileName);
+			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJar, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
 		}
 
