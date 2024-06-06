@@ -23,6 +23,11 @@ package net.openj9.stf;
 
 import static net.adoptopenjdk.stf.extensions.core.StfCoreExtension.Echo.ECHO_ON;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import net.adoptopenjdk.stf.environment.DirectoryRef;
@@ -205,14 +210,15 @@ public class SharedClasses implements SharedClassesPluginInterface {
 				System.out.println(sharedClassesJar.getSpec() + " does not exist");
 			} else {
 				System.out.println(sharedClassesJar.getSpec() + " exists");
-				// Rename the file here
-				FileRef newSharedClassesJar = sharedClassesDataDir.childFile(newFileName);
-				if (sharedClassesJar.renameTo(newSharedClassesJar)) {
-					System.out.println("Successfully renamed " + originalFileName + " to " + newFileName);
-					sharedClassesJar = newSharedClassesJar; // Update reference to the new file name
-					found = 1;
-				} else {
-					System.out.println("Failed to rename " + originalFileName + " to " + newFileName);
+				// Convert FileRef to Path and rename the file
+				Path sourcePath = Paths.get(sharedClassesJar.getAbsolutePath());
+				Path targetPath = Paths.get(sharedClassesJar.getParent(), newFileName);
+				try {
+					Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println("Successfully renamed file to: " + targetPath);
+					found = 1; // Update found since the file exists and was renamed
+				} catch (IOException e) {
+					System.out.println("Failed to rename file: " + e.getMessage());
 				}
 			}
 		}
@@ -238,7 +244,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 			DirectoryRef localSharedClassesJarsDir = test.doCpDir("Copy sharedClasses jars", appsSharedClassesJarsDir, test.env().getTmpDir().childDirectory("jars"));
 			localSharedClassesResources = localSharedClassesJarsDir.getSpec();
 		} else {
-			System.out.println("classes name :" + classFileName);
+			System.out.println("classes name :" + newFileName);
 			sharedClassesJar = sharedClassesDataDir.childFile(newFileName);
 			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJar, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
