@@ -210,9 +210,11 @@ public class SharedClasses implements SharedClassesPluginInterface {
 				System.out.println(sharedClassesJar.getSpec() + " does not exist");
 			} else {
 				System.out.println(sharedClassesJar.getSpec() + " exists");
-				// Convert FileRef to Path and rename the file
-				Path sourcePath = Paths.get(sharedClassesJar.getAbsolutePath());
-				Path targetPath = Paths.get(sharedClassesJar.getParent(), newFileName);
+
+				// Convert FileRef to Path using getSpec and manipulate string for directory
+				Path sourcePath = Paths.get(sharedClassesJar.getSpec());
+				String directoryPath = sourcePath.getParent().toString();
+				Path targetPath = Paths.get(directoryPath, newFileName);
 				try {
 					Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println("Successfully renamed file to: " + targetPath);
