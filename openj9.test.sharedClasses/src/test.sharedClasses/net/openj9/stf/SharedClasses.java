@@ -232,7 +232,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		} else {
 			System.out.println("classes name :" + classFileName);
 			DirectoryRef sharedClassesJarDir = sharedClassesDataDir.childDirectory(classFileName);
-			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJarDir, test.env().getTmpDir());
+			DirectoryRef localSharedClassesJarDir = test.doCp("Copy sharedClasses jar", sharedClassesJarDir, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
 		}
 
