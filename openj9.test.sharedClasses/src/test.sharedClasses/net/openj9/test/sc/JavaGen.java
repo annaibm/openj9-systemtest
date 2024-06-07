@@ -92,7 +92,7 @@ public class JavaGen
 
 
 		JavaGen generator = new JavaGen();
-		generator.go(path, numArg);
+		generator.go(path, numArg, javaVersion);
 
 	}
 
