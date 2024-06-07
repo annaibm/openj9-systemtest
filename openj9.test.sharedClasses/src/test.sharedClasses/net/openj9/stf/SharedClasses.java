@@ -23,11 +23,6 @@ package net.openj9.stf;
 
 import static net.adoptopenjdk.stf.extensions.core.StfCoreExtension.Echo.ECHO_ON;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import net.adoptopenjdk.stf.environment.DirectoryRef;
@@ -191,42 +186,30 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		// See whether the test data (20000 classes and jars) already exist.
 		// If not, create them in the first -systemtest-prereqs directory (or the default location if no -systemtest-prereqs were supplied).
 		DirectoryRef sharedClassesDataDir = null;   // This will be initialised when we find it.
-		FileRef sharedClassesJar = null;
-		// String javaVersion = System.getProperty("java.version");
 		int javaVersion = test.env().primaryJvm().getJavaVersion();
 		System.out.println("Tmp dir:" + test.env().getTmpDir());
 		System.out.println("java.version = " + javaVersion);
-
 		String dataSubdir = "sharedClassesTestData/v1";
-		String originalFileName = "classes.jar";
-		String newFileName = "classes-" + javaVersion + ".jar";
-
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
+		String classFileName = "classes-" + javaVersion + ".jar";
+		System.out.println("classes name :" + classFileName);
+		FileRef sharedClassesJar = null;
 		int found = 0;
-		for (int i = 0; i < prereqRoots.size() && found == 0; i++) {
+		for (int i = 0 ; (i < prereqRoots.size()) && ( found == 0 ); i++ ) {
 			sharedClassesDataDir = prereqRoots.get(i).childDirectory(dataSubdir);
-			sharedClassesJar = sharedClassesDataDir.childFile(newFileName);
+			sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
 			if (!sharedClassesJar.exists()) {
 				System.out.println(sharedClassesJar.getSpec() + " does not exist");
-			} else {
+			}
+			else {
 				System.out.println(sharedClassesJar.getSpec() + " exists");
-
-				// Convert FileRef to Path using getSpec and manipulate string for directory
-				Path sourcePath = Paths.get(sharedClassesJar.getSpec());
-				String directoryPath = sourcePath.getParent().toString();
-				Path targetPath = Paths.get(directoryPath, newFileName);
-				try {
-					Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-					System.out.println("Successfully renamed file to: " + targetPath);
-					found = 1; // Update found since the file exists and was renamed
-				} catch (IOException e) {
-					System.out.println("Failed to rename file: " + e.getMessage());
-				}
+				found = 1;
 			}
 		}
 
-		if (found == 0) {
+		if ( found == 0 ) {
 			sharedClassesDataDir = prereqRoots.get(0).childDirectory(dataSubdir);
+			System.out.println("sharedClassesDataDir: " + sharedClassesDataDir.getSpec() + "sharedClassesJar: " + sharedClassesJar.getSpec());
 			test.doRunForegroundProcess("Create Shared Classes jars",
 					"CSC",
 					ECHO_ON,
@@ -236,7 +219,8 @@ public class SharedClasses implements SharedClassesPluginInterface {
 						.addProjectToClasspath("openj9.test.sharedClasses")
 						.runClass(JavaGen.class)
 						.addArg(sharedClassesDataDir.getSpec())
-						.addArg("10000"));
+						.addArg("10000")
+						.addArg(String.valueOf(javaVersion)));
 		}
 
 		// Copy the shared classes jar/s from the systemtest_prereqs directory to /tmp.
@@ -246,8 +230,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 			DirectoryRef localSharedClassesJarsDir = test.doCpDir("Copy sharedClasses jars", appsSharedClassesJarsDir, test.env().getTmpDir().childDirectory("jars"));
 			localSharedClassesResources = localSharedClassesJarsDir.getSpec();
 		} else {
-			System.out.println("classes name :" + newFileName);
-			sharedClassesJar = sharedClassesDataDir.childFile(newFileName);
+			sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
 			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJar, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
 		}
