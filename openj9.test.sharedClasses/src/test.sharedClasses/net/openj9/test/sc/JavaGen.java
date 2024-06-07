@@ -98,7 +98,7 @@ public class JavaGen
 
 	void go(String path, int numArg, int  javaVersion) {
 		log("Creating source files");
-		makeJavas(path, numArg); //Make java source files
+		makeJavas(path, numArg,javaVersion); //Make java source files
 		log("Compiling java files");
 		compileJavas(path); //Compile Source to .class files
 		log("Source files compiled, creating jar files");
@@ -120,11 +120,11 @@ public class JavaGen
 	 * @param directory String, the directory to write them into.
 	 * @param count int, the number of tests to generate.
 	 */
-	private void makeJavas(String dir, int count)
+	private void makeJavas(String dir, int count, int javaVersion)
 	{
 		System.out.println("dir:" + dir);
 		String sl = System.getProperty("file.separator");
-		String directory = dir + sl + "net" + sl + "openj9" + sl + "sc" + sl + "classes";
+		String directory = dir + sl + "net" + javaVersion +  sl + "openj9" + sl + "sc" + sl + "classes";
 
 		File fileDir = new File(directory);
 		boolean mkDirBool = fileDir.mkdirs();
@@ -468,7 +468,7 @@ public class JavaGen
 		// Make individual jar files
 		try
 		{
-			File jarDir = new File(directory + sl + "jars");
+			File jarDir = new File(directory + sl + "jars" + javaVersion);
 			boolean mkDirBool = jarDir.mkdirs();
 
 			if (!mkDirBool)
