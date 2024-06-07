@@ -228,7 +228,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 			DirectoryRef localSharedClassesJarsDir = test.doCpDir("Copy sharedClasses jars", appsSharedClassesJarsDir, test.env().getTmpDir().childDirectory("jars"));
 			localSharedClassesResources = localSharedClassesJarsDir.getSpec();
 		} else {
-			Fileref sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
+			FileRef sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
 			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJar, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
 		}
