@@ -193,15 +193,16 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
 		String classFileName = "classes" + javaVersion + ".jar";
 		System.out.println("classes name :" + classFileName);
-
+		FileRef sharedClassesJar = null;
 		int found = 0;
 		for (int i = 0 ; (i < prereqRoots.size()) && ( found == 0 ); i++ ) {
 			sharedClassesDataDir = prereqRoots.get(i).childDirectory(dataSubdir);
-			if (!sharedClassesDataDir.exists()) {
-				System.out.println(sharedClassesDataDir.getSpec() + " does not exist");
+			sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
+			if (!sharedClassesJar.exists()) {
+				System.out.println(sharedClassesJar.getSpec() + " does not exist");
 			}
 			else {
-				System.out.println(sharedClassesDataDir.getSpec() + " exists");
+				System.out.println(sharedClassesJar.getSpec() + " exists");
 				found = 1;
 			}
 		}
@@ -228,7 +229,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 			DirectoryRef localSharedClassesJarsDir = test.doCpDir("Copy sharedClasses jars", appsSharedClassesJarsDir, test.env().getTmpDir().childDirectory("jars"));
 			localSharedClassesResources = localSharedClassesJarsDir.getSpec();
 		} else {
-			FileRef sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
+			sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
 			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJar, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
 		}
