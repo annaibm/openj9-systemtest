@@ -122,6 +122,7 @@ public class JavaGen
 	 */
 	private void makeJavas(String dir, int count)
 	{
+		System.out.println("dir:" + dir);
 		String sl = System.getProperty("file.separator");
 		String directory = dir + sl + "net" + sl + "openj9" + sl + "sc" + sl + "classes";
 

@@ -209,7 +209,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 
 		if ( found == 0 ) {
 			sharedClassesDataDir = prereqRoots.get(0).childDirectory(dataSubdir);
-			System.out.println("sharedClassesDataDir: " + sharedClassesDataDir.getSpec() + "sharedClassesJar: " + sharedClassesJar.getSpec());
+			System.out.println("sharedClassesDataDir: " + sharedClassesDataDir.getSpec() + " sharedClassesJar: " + sharedClassesJar.getSpec());
 			test.doRunForegroundProcess("Create Shared Classes jars",
 					"CSC",
 					ECHO_ON,
@@ -220,7 +220,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 						.runClass(JavaGen.class)
 						.addArg(sharedClassesDataDir.getSpec())
 						.addArg("10000")
-						.addArg(String.valueOf(javaVersion)));
+						.addArg(javaVersion));
 		}
 
 		// Copy the shared classes jar/s from the systemtest_prereqs directory to /tmp.
