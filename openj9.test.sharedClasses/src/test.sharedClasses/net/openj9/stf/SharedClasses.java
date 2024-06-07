@@ -194,22 +194,21 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		String classFileName = "classes-" + javaVersion + ".jar";
 		System.out.println("classes name :" + classFileName);
 		FileRef sharedClassesJar = null;
+		System.out.println("sharedClassesDataDir: " + sharedClassesDataDir.getSpec() + " sharedClassesJar: " + sharedClassesJar.getSpec());
 		int found = 0;
 		for (int i = 0 ; (i < prereqRoots.size()) && ( found == 0 ); i++ ) {
 			sharedClassesDataDir = prereqRoots.get(i).childDirectory(dataSubdir);
-			sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
-			if (!sharedClassesJar.exists()) {
-				System.out.println(sharedClassesJar.getSpec() + " does not exist");
+			if (!sharedClassesDataDir.exists()) {
+				System.out.println(sharedClassesDataDir.getSpec() + " does not exist");
 			}
 			else {
-				System.out.println(sharedClassesJar.getSpec() + " exists");
+				System.out.println(sharedClassesDataDir.getSpec() + " exists");
 				found = 1;
 			}
 		}
 
 		if ( found == 0 ) {
 			sharedClassesDataDir = prereqRoots.get(0).childDirectory(dataSubdir);
-			System.out.println("sharedClassesDataDir: " + sharedClassesDataDir.getSpec() + " sharedClassesJar: " + sharedClassesJar.getSpec());
 			test.doRunForegroundProcess("Create Shared Classes jars",
 					"CSC",
 					ECHO_ON,
