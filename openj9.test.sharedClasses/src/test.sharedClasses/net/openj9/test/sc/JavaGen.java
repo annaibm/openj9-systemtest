@@ -124,7 +124,7 @@ public class JavaGen
 	{
 		System.out.println("dir:" + dir);
 		String sl = System.getProperty("file.separator");
-		String directory = dir + sl + "net" + javaVersion +  sl + "openj9" + sl + "sc" + sl + "classes";
+		String directory = dir + sl + "net" + sl + "openj9" + sl + "sc" + sl + "classes";
 
 		File fileDir = new File(directory);
 		boolean mkDirBool = fileDir.mkdirs();
@@ -468,7 +468,7 @@ public class JavaGen
 		// Make individual jar files
 		try
 		{
-			File jarDir = new File(directory + sl + "jars" + javaVersion);
+			File jarDir = new File(directory + sl + "jars");
 			boolean mkDirBool = jarDir.mkdirs();
 
 			if (!mkDirBool)
