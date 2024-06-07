@@ -193,8 +193,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
 		String classFileName = "classes-" + javaVersion + ".jar";
 		System.out.println("classes name :" + classFileName);
-		FileRef sharedClassesJar = null;
-		System.out.println("sharedClassesDataDir: " + sharedClassesDataDir.getSpec() + " sharedClassesJar: " + sharedClassesJar.getSpec());
+
 		int found = 0;
 		for (int i = 0 ; (i < prereqRoots.size()) && ( found == 0 ); i++ ) {
 			sharedClassesDataDir = prereqRoots.get(i).childDirectory(dataSubdir);
@@ -229,7 +228,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 			DirectoryRef localSharedClassesJarsDir = test.doCpDir("Copy sharedClasses jars", appsSharedClassesJarsDir, test.env().getTmpDir().childDirectory("jars"));
 			localSharedClassesResources = localSharedClassesJarsDir.getSpec();
 		} else {
-			sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
+			Fileref sharedClassesJar = sharedClassesDataDir.childFile(classFileName);
 			FileRef localSharedClassesJar = test.doCp("Copy sharedClasses jar", sharedClassesJar, test.env().getTmpDir());
 			localSharedClassesResources = localSharedClassesJar.getSpec();
 		}
