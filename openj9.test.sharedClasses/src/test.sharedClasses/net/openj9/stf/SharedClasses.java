@@ -191,7 +191,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		System.out.println("java.version = " + javaVersion);
 		String dataSubdir = "sharedClassesTestData/v1";
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
-		String classFileName = "classes-" + javaVersion + ".jar";
+		String classFileName = "classes" + javaVersion + ".jar";
 		System.out.println("classes name :" + classFileName);
 
 		int found = 0;
