@@ -127,6 +127,13 @@ public class JavaGen
 		String directory = dir + sl + "net" + sl + "openj9" + sl + "sc" + sl + "classes";
 
 		File fileDir = new File(directory);
+		if (fileDir.exists()) {
+			try {
+				deleteDirectory(fileDir);
+			} catch (IOException e) {
+				throw new RuntimeException("Failed to delete existing directory: " + e.getMessage());
+			}
+		}
 		boolean mkDirBool = fileDir.mkdirs();
 
 		if (!mkDirBool)
@@ -469,6 +476,14 @@ public class JavaGen
 		try
 		{
 			File jarDir = new File(directory + sl + "jars");
+			if (jarDir.exists()) {
+				// Attempt to delete it
+				try {
+					deleteDirectory(jarDir);
+				} catch (IOException e) {
+					throw new RuntimeException("Failed to delete existing directory: " + e.getMessage());
+				}
+			}
 			boolean mkDirBool = jarDir.mkdirs();
 
 			if (!mkDirBool)
@@ -584,6 +599,24 @@ public class JavaGen
 			System.out.println("Failed making individual jar files");
 			e.printStackTrace();
 			System.exit(1);
+		}
+	}
+
+	public static void deleteDirectory(File directory) throws IOException {
+		// Check if the directory is actually a directory and not just a file
+		if (directory.isDirectory()) {
+			// List all entries in the directory (files and subdirectories)
+			File[] entries = directory.listFiles();
+			if (entries != null) {
+				// Iterate over each entry and recursively call deleteDirectory
+				for (File entry : entries) {
+					deleteDirectory(entry);
+				}
+			}
+		}
+		// After all contents are deleted, delete the directory itself
+		if (!directory.delete()) {
+			throw new IOException("Failed to delete " + directory);
 		}
 	}
 
