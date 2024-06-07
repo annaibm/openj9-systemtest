@@ -219,7 +219,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 						.runClass(JavaGen.class)
 						.addArg(sharedClassesDataDir.getSpec())
 						.addArg("10000")
-						.addArg(javaVersion));
+						.addArg(String.valueOf(javaVersion)));
 		}
 
 		// Copy the shared classes jar/s from the systemtest_prereqs directory to /tmp.
