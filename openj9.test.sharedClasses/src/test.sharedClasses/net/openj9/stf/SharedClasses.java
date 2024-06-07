@@ -205,7 +205,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		int found = 0;
 		for (int i = 0; i < prereqRoots.size() && found == 0; i++) {
 			sharedClassesDataDir = prereqRoots.get(i).childDirectory(dataSubdir);
-			sharedClassesJar = sharedClassesDataDir.childFile(originalFileName);
+			sharedClassesJar = sharedClassesDataDir.childFile(newFileName);
 			if (!sharedClassesJar.exists()) {
 				System.out.println(sharedClassesJar.getSpec() + " does not exist");
 			} else {
