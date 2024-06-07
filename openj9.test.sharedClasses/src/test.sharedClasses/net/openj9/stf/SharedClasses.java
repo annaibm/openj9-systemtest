@@ -199,7 +199,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 
 		String dataSubdir = "sharedClassesTestData/v1";
 		String originalFileName = "classes-" + javaVersion + ".jar";
-		String newFileName = "classes-jvm" + javaVersion + ".jar"; // New filename with JVM version
+		String newFileName = "classes-" + javaVersion + ".jar";
 
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
 		int found = 0;
