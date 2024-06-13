@@ -186,7 +186,8 @@ public class SharedClasses implements SharedClassesPluginInterface {
 		// See whether the test data (20000 classes and jars) already exist.
 		// If not, create them in the first -systemtest-prereqs directory (or the default location if no -systemtest-prereqs were supplied).
 		DirectoryRef sharedClassesDataDir = null;   // This will be initialised when we find it.
-		int javaVersion = test.env().primaryJvm().getJavaVersion();
+		// int javaVersion = test.env().primaryJvm().getJavaVersion();
+		int javaVersion = environmentCore.primaryJvm().getJavaVersion();
 		String dataSubdir = "sharedClassesTestData/v1/jdk" + javaVersion;
 		ArrayList<DirectoryRef> prereqRoots = test.env().getPrereqRoots();
 		int found = 0;
