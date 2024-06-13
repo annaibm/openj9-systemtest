@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2016, 2023 IBM Corp. and others
+* Copyright (c) 2016, 2024 IBM Corp. and others
 *
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License 2.0 which accompanies this distribution
@@ -31,6 +31,7 @@ import net.adoptopenjdk.stf.environment.StfTestArguments;
 import net.adoptopenjdk.stf.extensions.core.StfCoreExtension;
 import net.adoptopenjdk.stf.processes.ExpectedOutcome;
 import net.adoptopenjdk.stf.runner.modes.HelpTextGenerator;
+import net.adoptopenjdk.stf.environment.StfEnvironmentCore;
 import net.openj9.stf.sharedClasses.SharedClassesPluginInterface;
 import net.openj9.stf.sharedClasses.StfSharedClassesExtension;
 import net.openj9.test.sc.JavaGen;
