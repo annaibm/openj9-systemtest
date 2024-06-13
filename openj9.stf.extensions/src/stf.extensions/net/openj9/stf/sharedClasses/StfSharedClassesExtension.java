@@ -388,4 +388,8 @@ public class StfSharedClassesExtension implements StfExtension {
 		extensionBase.outputCountFileMatches("$error_count", process.getStdoutFileRef(), "ERROR");
 		extensionBase.outputFailIfTrue("java", "Verify Classes Caches using JVMTI", "$error_count", "!=", 0);	
 	}
+
+	public StfEnvironmentCore getEnvironmentCore() {
+		return environmentCore;
+	}
 }

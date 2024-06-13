@@ -141,6 +141,8 @@ public class SharedClasses implements SharedClassesPluginInterface {
 
 	private String localSharedClassesResources;
 
+	private StfEnvironmentCore environmentCore;
+
 
 	public void help(HelpTextGenerator help) {
 		help.outputSection("Shared Classes test options");
@@ -183,7 +185,7 @@ public class SharedClasses implements SharedClassesPluginInterface {
 
 
 	public void setUp(StfCoreExtension test, StfSharedClassesExtension sharedClasses) throws Exception {
-
+		this.environmentCore = sharedClasses.getEnvironmentCore();
 		// See whether the test data (20000 classes and jars) already exist.
 		// If not, create them in the first -systemtest-prereqs directory (or the default location if no -systemtest-prereqs were supplied).
 		DirectoryRef sharedClassesDataDir = null;   // This will be initialised when we find it.
