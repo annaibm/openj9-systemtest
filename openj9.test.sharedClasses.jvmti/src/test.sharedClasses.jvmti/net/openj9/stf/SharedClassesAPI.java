@@ -222,9 +222,11 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
 				// Use prebuilt shared library from test-images path
                 System.out.println("testenv::"+ test.env().toString());
+                DirectoryRef grinderRoot = test.env().getTestRoot().parentDirectory().parentDirectory();
+                System.out.println("Grinder root path: " + grinderRoot.getSpec());
                 String platform = test.env().getPlatformSimple();
                         // Source file
-                FileRef sourceFile = test.env().getBuildDir()
+                FileRef sourceFile = grinderRoot
                         .childDirectory("jdkbinary/openjdk-test-image/openj9")
                         .childFile("libsharedClasses.so");
 
