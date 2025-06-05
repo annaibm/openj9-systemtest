@@ -228,24 +228,27 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 // Get the first test root directory
                 DirectoryRef testRoot = test.env().getTestRoots().get(0);
                 File testRootFile = testRoot.asJavaFile();  // Convert to java.io.File
-                File parent = testRootFile.getParentFile();
-                File grandParent = parent != null ? parent.getParentFile() : null;
-
-                if (grandParent != null) {
-                    System.out.println("Grandparent directory: " + grandParent.getAbsolutePath());
-                } else {
-                    System.out.println("Unable to get grandparent directory.");
+                File parent = testRootFile.getCanonicalFile();
+                while ( parent != null && parent.getName().startsWith("Grinder")){
+                    parent = parent.getParentFile();
                 }
+                if (parent != null && parent.getName().startsWith("Grinder")) {
+                    System.out.println("Grinder root path: " + parent.getAbsolutePath());
 
-                // Go up two levels
-                DirectoryRef grinderRoot = test.env().createDirectoryRef(grandParent.getAbsolutePath());
-                System.out.println("Grinder root path: " + grinderRoot.getSpec());
-                String platform = test.env().getPlatformSimple();
-                        // Source file
-                FileRef sourceFile = grinderRoot
+                     // Build your source path from here
+                     File sourcePath = new File(parent, "jdkbinary/openjdk-test-image/openj9");
+                     System.out.println("Source path: " + sourcePath.getAbsolutePath());
+
+                     // Optional: STF DirectoryRef if you want to use it
+                    DirectoryRef grinderRootRef = test.env().createDirectoryRef(parent.getAbsolutePath());
+                    FileRef sourceFile = grinderRootRef
                         .childDirectory("jdkbinary/openjdk-test-image/openj9")
                         .childFile("libsharedClasses.so");
-
+                } else {
+                        System.out.println("Error: Could not find directory starting with 'Grinder' in path.");
+                }
+                
+                String platform = test.env().getPlatformSimple();
                 // Destination directory
                 DirectoryRef destDir = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
                         .childDirectory(test.env().getPlatformSimple());
