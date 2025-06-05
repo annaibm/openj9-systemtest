@@ -230,9 +230,6 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 FileRef agent = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
 						.childDirectory(test.env().getPlatformSimple())
 						.childFile(nativePrefix + "sharedClasses" + nativeExt);
-			
-                FileRef agent = test.env().findTestDirectory("jdkbinary/openjdk-test-image/openj9")
-                        .childFile("libsharedClasses.so");
 
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
