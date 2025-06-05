@@ -24,6 +24,7 @@ package net.openj9.stf;
 import static net.adoptopenjdk.stf.extensions.core.StfCoreExtension.Echo.ECHO_OFF;
 import static net.adoptopenjdk.stf.extensions.core.StfCoreExtension.Echo.ECHO_ON;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -226,6 +227,15 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 }
                 // Get the first test root directory
                 DirectoryRef testRoot = test.env().getTestRoots().get(0);
+                File testRootFile = testRoot.asJavaFile();  // Convert to java.io.File
+                File parent = testRootFile.getParentFile();
+                File grandParent = parent != null ? parent.getParentFile() : null;
+
+                if (grandParent != null) {
+                    System.out.println("Grandparent directory: " + grandParent.getAbsolutePath());
+                } else {
+                    System.out.println("Unable to get grandparent directory.");
+                }
 
                 // Go up two levels
                 DirectoryRef grinderRoot = testRoot.parentDirectory().parentDirectory();
