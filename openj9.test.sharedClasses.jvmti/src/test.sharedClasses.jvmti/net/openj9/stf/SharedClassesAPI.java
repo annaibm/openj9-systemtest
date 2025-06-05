@@ -223,13 +223,19 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				// Use prebuilt shared library from test-images path
                 System.out.println("testenv::"+ test.env().toString());
                 String platform = test.env().getPlatformSimple();
-                String cmd = "cp /home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/libsharedClasses.so "
-                            + "openj9.test.sharedClasses.jvmti/bin/native/" + platform;
+                        // Source file
+                FileRef sourceFile = test.env().findTestDirectory("/home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/")
+                        .childFile("libsharedClasses.so");
 
-                test.doRunCommand("Copy agent lib", cmd);
-                FileRef agent = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
-						.childDirectory(test.env().getPlatformSimple())
-						.childFile(nativePrefix + "sharedClasses" + nativeExt);
+                // Destination directory
+                DirectoryRef destDir = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
+                        .childDirectory(test.env().getPlatformSimple());
+
+                // Use STF's doCp function
+                test.doCp("Copy agent lib", sourceFile, destDir);
+
+                // Reference the copied file (agent lib)
+                FileRef agent = destDir.childFile(nativePrefix + "sharedClasses" + nativeExt);
 
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
