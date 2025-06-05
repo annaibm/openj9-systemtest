@@ -224,7 +224,8 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 System.out.println("testenv::"+ test.env().toString());
                 String platform = test.env().getPlatformSimple();
                         // Source file
-                FileRef sourceFile = test.env().findTestDirectory("/home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/")
+                FileRef sourceFile = test.env().getBuildDir()
+                        .childDirectory("jdkbinary/openjdk-test-image/openj9")
                         .childFile("libsharedClasses.so");
 
                 // Destination directory
