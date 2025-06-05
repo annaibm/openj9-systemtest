@@ -221,8 +221,14 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				}
 				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
 				// Use prebuilt shared library from test-images path
-                System.out.println("testenv::"+ test.env().toString());
-                DirectoryRef grinderRoot = test.env().getTestRoot().parentDirectory().parentDirectory();
+                for (DirectoryRef testRoot : test.env().getTestRoots()) {
+                        System.out.println("Test Root: " + testRoot.getSpec());
+                }
+                // Get the first test root directory
+                DirectoryRef testRoot = test.env().getTestRoots().get(0);
+
+                // Go up two levels
+                DirectoryRef grinderRoot = testRoot.parentDirectory().parentDirectory();
                 System.out.println("Grinder root path: " + grinderRoot.getSpec());
                 String platform = test.env().getPlatformSimple();
                         // Source file
