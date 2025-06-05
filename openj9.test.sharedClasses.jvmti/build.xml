@@ -65,7 +65,7 @@ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0-only WITH Classpath-ex
 	<target name="build-dependencies" depends="check-prereqs" >
 	</target>
 	
-	<target name="build" depends="check-prereqs, build-no-natives, build-natives">
+	<target name="build" depends="check-prereqs, build-no-natives">
 	</target>
 	
 	<target name="build-no-natives" depends="check-prereqs, build-dependencies, check-prereqs, build-archives">

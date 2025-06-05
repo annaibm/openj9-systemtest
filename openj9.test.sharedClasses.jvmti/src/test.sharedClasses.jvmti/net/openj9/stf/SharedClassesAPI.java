@@ -204,6 +204,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 						ExpectedOutcome.cleanRun().within("10m"), 
 						test.createJavaProcessDefinition()
 							.addJvmOption(sharedClassesOption)
+                            .addJvmOption("-Djava.library.path=" + test.env().getTestOutputDir().getAbsolutePath())
 							.addJvmOption("-DconfigFile=" + configFile.getSpec())
 							.addJvmOption("-DwlCacheList=" + wlCacheListToString())
 							.addProjectToClasspath("openj9.test.sharedClasses.jvmti")
