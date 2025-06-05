@@ -204,7 +204,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 						ExpectedOutcome.cleanRun().within("10m"), 
 						test.createJavaProcessDefinition()
 							.addJvmOption(sharedClassesOption)
-                            .addJvmOption("-Djava.library.path=" + test.env().getTestOutputDir().getAbsolutePath())
+                            .addJvmOption("-Djava.library.path=/home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9")
 							.addJvmOption("-DconfigFile=" + configFile.getSpec())
 							.addJvmOption("-DwlCacheList=" + wlCacheListToString())
 							.addProjectToClasspath("openj9.test.sharedClasses.jvmti")
@@ -220,9 +220,9 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 					nativeExt = ".so";
 				}
 				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
-				FileRef agent = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
-						.childDirectory(test.env().getPlatformSimple())
-						.childFile(nativePrefix + "sharedClasses" + nativeExt);
+				// Use prebuilt shared library from test-images path
+                FileRef agent = test.env().getFileFromPath("/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/" + nativePrefix + "sharedClasses" + nativeExt);
+
 				
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
