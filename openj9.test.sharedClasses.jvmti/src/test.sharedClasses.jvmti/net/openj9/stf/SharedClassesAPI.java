@@ -221,7 +221,16 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				}
 				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
 				// Use prebuilt shared library from test-images path
-                System.out.println(test.env().toString());
+                System.out.println("testenv::"+ test.env().toString());
+                String platform = test.env().getPlatformSimple();
+                String cmd = "cp /home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/libsharedClasses.so "
+                            + "openj9.test.sharedClasses.jvmti/bin/native/" + platform;
+
+                test.doRunCommand("Copy agent lib", cmd);
+                FileRef agent = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
+						.childDirectory(test.env().getPlatformSimple())
+						.childFile(nativePrefix + "sharedClasses" + nativeExt);
+			
                 FileRef agent = test.env().findTestDirectory("jdkbinary/openjdk-test-image/openj9")
                         .childFile("libsharedClasses.so");
 
