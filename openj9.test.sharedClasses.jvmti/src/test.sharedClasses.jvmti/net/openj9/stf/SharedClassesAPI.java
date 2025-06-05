@@ -258,7 +258,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 
                     test.doCp("Copy agent lib", sourceFile, destDir);
 
-                    FileRef agent = destDir.childFile(nativePrefix + "sharedClasses" + nativeExt);
+                    agent = destDir.childFile(nativePrefix + "sharedClasses" + nativeExt);
                 }
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
