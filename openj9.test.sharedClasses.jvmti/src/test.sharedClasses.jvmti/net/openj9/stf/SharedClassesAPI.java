@@ -232,33 +232,34 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 while ( parent != null && parent.getName().startsWith("Grinder")){
                     parent = parent.getParentFile();
                 }
+                FileRef sourceFile = null;
+                FileRef agent = null;
                 if (parent != null && parent.getName().startsWith("Grinder")) {
                     System.out.println("Grinder root path: " + parent.getAbsolutePath());
 
-                     // Build your source path from here
-                     File sourcePath = new File(parent, "jdkbinary/openjdk-test-image/openj9");
-                     System.out.println("Source path: " + sourcePath.getAbsolutePath());
+                    // Build your source path from here
+                    File sourcePath = new File(parent, "jdkbinary/openjdk-test-image/openj9");
+                    System.out.println("Source path: " + sourcePath.getAbsolutePath());
 
-                     // Optional: STF DirectoryRef if you want to use it
+                    // Create STF DirectoryRef and FileRef
                     DirectoryRef grinderRootRef = test.env().createDirectoryRef(parent.getAbsolutePath());
-                    FileRef sourceFile = grinderRootRef
+                    sourceFile = grinderRootRef
                         .childDirectory("jdkbinary/openjdk-test-image/openj9")
                         .childFile("libsharedClasses.so");
                 } else {
-                        System.out.println("Error: Could not find directory starting with 'Grinder' in path.");
+                    System.out.println("Error: Could not find directory starting with 'Grinder' in path.");
                 }
-                
-                String platform = test.env().getPlatformSimple();
-                // Destination directory
-                DirectoryRef destDir = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
-                        .childDirectory(test.env().getPlatformSimple());
 
-                // Use STF's doCp function
-                test.doCp("Copy agent lib", sourceFile, destDir);
+                // Continue only if sourceFile is found
+                if (sourceFile != null) {
+                    String platform = test.env().getPlatformSimple();
+                    DirectoryRef destDir = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
+                        .childDirectory(platform);
 
-                // Reference the copied file (agent lib)
-                FileRef agent = destDir.childFile(nativePrefix + "sharedClasses" + nativeExt);
+                    test.doCp("Copy agent lib", sourceFile, destDir);
 
+                    FileRef agent = destDir.childFile(nativePrefix + "sharedClasses" + nativeExt);
+                }
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
 				}
