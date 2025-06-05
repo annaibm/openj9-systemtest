@@ -238,7 +238,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 }
 
                 // Go up two levels
-                DirectoryRef grinderRoot = test.createDirectoryRef(grandParent.getAbsolutePath());
+                DirectoryRef grinderRoot = test.env().createDirectoryRef(grandParent.getAbsolutePath());
                 System.out.println("Grinder root path: " + grinderRoot.getSpec());
                 String platform = test.env().getPlatformSimple();
                         // Source file
