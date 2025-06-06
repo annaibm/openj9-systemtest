@@ -263,7 +263,9 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 
                     test.doCp("Copy agent lib", sourceFile, destDir);
 
-                    agent = destDir.childFile(nativePrefix + "sharedClasses" + nativeExt);
+                    //agent = destDir.childFile(nativePrefix + "sharedClasses" + nativeExt);
+                    agent = test.env().createFileRef("/home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/libsharedClasses.so");
+
                 }
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
