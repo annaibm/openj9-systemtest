@@ -225,27 +225,32 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 for (DirectoryRef testRoot : test.env().getTestRoots()) {
                         System.out.println("Test Root: " + testRoot.getSpec());
                 }
+                FileRef sourceFile = null;
+                FileRef agent = null;
                 // Get the first test root directory
                 DirectoryRef testRoot = test.env().getTestRoots().get(0);
                 File testRootFile = testRoot.asJavaFile();  // Convert to java.io.File
-                File parent = testRootFile.getCanonicalFile();
-                while ( parent != null && parent.getName().startsWith("Grinder")){
-                    parent = parent.getParentFile();
+                File current = testRootFile.getCanonicalFile();
+
+// Walk up until you find a parent that is named exactly "Grinder" or starts with it
+                while (current != null && !current.getName().startsWith("Grinder")) {
+                    current = current.getParentFile();
                 }
-                FileRef sourceFile = null;
-                FileRef agent = null;
-                if (parent != null && parent.getName().startsWith("Grinder")) {
-                    System.out.println("Grinder root path: " + parent.getAbsolutePath());
+
+                if (current != null) {
+                    System.out.println("Found Grinder root path: " + current.getAbsolutePath());
 
                     // Build your source path from here
-                    File sourcePath = new File(parent, "jdkbinary/openjdk-test-image/openj9");
+                    File sourcePath = new File(current, "jdkbinary/openjdk-test-image/openj9");
                     System.out.println("Source path: " + sourcePath.getAbsolutePath());
 
                     // Create STF DirectoryRef and FileRef
-                    DirectoryRef grinderRootRef = test.env().createDirectoryRef(parent.getAbsolutePath());
+                    DirectoryRef grinderRootRef = test.env().createDirectoryRef(current.getAbsolutePath());
                     sourceFile = grinderRootRef
                         .childDirectory("jdkbinary/openjdk-test-image/openj9")
                         .childFile("libsharedClasses.so");
+
+                    // continue...
                 } else {
                     System.out.println("Error: Could not find directory starting with 'Grinder' in path.");
                 }
