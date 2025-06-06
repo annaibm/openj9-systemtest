@@ -219,9 +219,9 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 					nativeExt = ".so";
 				}
 				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
-				FileRef agent = test.env().findTestDirectory("openj9.test.sharedClasses.jvmti/bin/native")
-						.childDirectory(test.env().getPlatformSimple())
-						.childFile(nativePrefix + "sharedClasses" + nativeExt);
+
+				FileRef agent = test.env().createFileRef("/home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/" 
+                        + nativePrefix + "sharedClasses" + nativeExt);
 				
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
