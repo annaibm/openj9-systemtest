@@ -223,7 +223,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                     throw new IllegalStateException("TEST_JAVA_HOME is not set");
                 }
                 String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
-                String agentPath = testJavaHome + "../openjdk-test-image/openj9/"
+                String agentPath = testJavaHome + "/../openjdk-test-image/openj9/"
                    + nativePrefix + "sharedClasses" + nativeExt;
 				FileRef agent = test.env().createFileRef(agentPath);
 				
