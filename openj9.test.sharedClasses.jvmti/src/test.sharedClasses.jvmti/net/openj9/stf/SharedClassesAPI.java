@@ -218,10 +218,14 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				} else {
 					nativeExt = ".so";
 				}
-				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
-
-				FileRef agent = test.env().createFileRef("/home/jenkins/workspace/Grinder/jdkbinary/openjdk-test-image/openj9/" 
-                        + nativePrefix + "sharedClasses" + nativeExt);
+                String testJavaHome = System.getenv("TEST_JAVA_HOME");
+                if (testJavaHome == null || testJavaHome.isEmpty()) {
+                    throw new IllegalStateException("TEST_JAVA_HOME is not set");
+                }
+                String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
+                String agentPath = testJavaHome + "../openjdk-test-image/openj9/"
+                   + nativePrefix + "sharedClasses" + nativeExt;
+				FileRef agent = test.env().createFileRef(agentPath);
 				
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
