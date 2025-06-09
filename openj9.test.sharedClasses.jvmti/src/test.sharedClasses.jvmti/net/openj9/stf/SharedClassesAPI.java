@@ -218,7 +218,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				} else {
 					nativeExt = ".so";
 				}
-                String testJavaHome = System.getenv("TEST_JDK_HOME");
+                String testJavaHome = System.getenv("JAVA_HOME");
                 if (testJavaHome == null || testJavaHome.isEmpty()) {
                     throw new IllegalStateException("TEST_JAVA_HOME is not set");
                 }
