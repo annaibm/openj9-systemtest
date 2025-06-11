@@ -218,9 +218,9 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				} else {
 					nativeExt = ".so";
 				}
-                String testJavaHome = System.getenv("JAVA_HOME");
-                if (testJavaHome == null || testJavaHome.isEmpty()) {
-                    throw new IllegalStateException("TEST_JAVA_HOME is not set");
+                String nativeLibPath = System.getProperty("NATIVE_TEST_LIBS");
+                if (nativeLibPath == null || nativeLibPath.isEmpty()) {
+                    throw new IllegalStateException("nativeLibPath is not set");
                 }
                 String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
                 String agentPath = testJavaHome + "/../openjdk-test-image/openj9/"
