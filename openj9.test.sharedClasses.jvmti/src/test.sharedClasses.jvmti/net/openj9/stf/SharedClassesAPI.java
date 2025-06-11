@@ -218,6 +218,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				} else {
 					nativeExt = ".so";
 				}
+				System.getProperties().list(System.out);
                 String nativeLibPath = System.getProperty("NATIVE_TEST_LIBS");
                 if (nativeLibPath == null || nativeLibPath.isEmpty()) {
                     throw new IllegalStateException("nativeLibPath is not set");
