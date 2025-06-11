@@ -198,17 +198,12 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				test.doWriteFile(commentPrefix + "Create_config.props", configFile , configContent);
 	
 				// Run the SharedClassesCacheChecker class to validate the sharedClasses caches and delete them.
-				String nativeLibPath = System.getenv("NATIVE_TEST_LIBS");
-				if (nativeLibPath == null || nativeLibPath.isEmpty()) {
-					throw new IllegalStateException("NATIVE_TEST_LIBS is not set");
-				}
 				test.doRunForegroundProcess(commentPrefix + "Check Shared Classes Caches", 
 						"SCC",
 						ECHO_ON,
 						ExpectedOutcome.cleanRun().within("10m"), 
 						test.createJavaProcessDefinition()
 							.addJvmOption(sharedClassesOption)
-							.addJvmOption("-DNATIVE_TEST_LIBS=" + nativeLibPath)
 							.addJvmOption("-DconfigFile=" + configFile.getSpec())
 							.addJvmOption("-DwlCacheList=" + wlCacheListToString())
 							.addProjectToClasspath("openj9.test.sharedClasses.jvmti")
@@ -223,7 +218,6 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				} else {
 					nativeExt = ".so";
 				}
-				System.getProperties().list(System.out);
                 String nativeLibPath = System.getenv("NATIVE_TEST_LIBS");
                 if (nativeLibPath == null || nativeLibPath.isEmpty()) {
                     throw new IllegalStateException("nativeLibPath is not set");
