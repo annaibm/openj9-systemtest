@@ -223,7 +223,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                     throw new IllegalStateException("nativeLibPath is not set");
                 }
                 String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
-                String agentPath = nativeLibPath + "/../openjdk-test-image/openj9/"
+                String agentPath = nativeLibPath + "/"
                    + nativePrefix + "sharedClasses" + nativeExt;
 				FileRef agent = test.env().createFileRef(agentPath);
 				
