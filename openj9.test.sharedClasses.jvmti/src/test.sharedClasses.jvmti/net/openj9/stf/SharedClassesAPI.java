@@ -222,6 +222,8 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
                 if (nativeLibPath == null || nativeLibPath.isEmpty()) {
                     throw new IllegalStateException("nativeLibPath is not set");
                 }
+				System.out.println("nativeLibPath = " + System.getenv("NATIVE_TEST_LIBS"));
+
                 String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
                 String agentPath = nativeLibPath + "/"
                    + nativePrefix + "sharedClasses" + nativeExt;
