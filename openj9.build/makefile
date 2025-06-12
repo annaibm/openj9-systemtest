@@ -117,7 +117,9 @@ endif
 ifeq (,$(wildcard $(JAVA_HOME)))
   $(error ERROR: JAVA_HOME $(JAVA_HOME) does not exist)
 endif
-
+ifeq ($(CYGWIN),1)
+  NATIVE_TEST_LIBS := $(shell $(CMD_PREFIX) cygpath -m '$(NATIVE_TEST_LIBS)')
+endif
 STF_ROOT:=$(OPENJ9_SYSTEMTEST_ROOT)$(D)..$(D)stf
 TEST_STF_ROOT:=$(STF_ROOT)
 #$(warning TEST_STF_ROOT is $(TEST_STF_ROOT))
