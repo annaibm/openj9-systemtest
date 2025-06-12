@@ -218,21 +218,21 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 				} else {
 					nativeExt = ".so";
 				}
-                String nativeLibPath = System.getenv("NATIVE_TEST_LIBS");
-                if (nativeLibPath == null || nativeLibPath.isEmpty()) {
-                    throw new IllegalStateException("nativeLibPath is not set");
-                }
-				System.out.println("nativeLibPath = " + System.getenv("NATIVE_TEST_LIBS"));
+				String nativeLibPath = System.getenv("NATIVE_TEST_LIBS");
+				if (nativeLibPath == null || nativeLibPath.isEmpty()) {
+					throw new IllegalStateException("NATIVE_TEST_LIBS is not set");
+				}
+				System.out.println("NATIVE_TEST_LIBS = " + nativeLibPath);
 				if (nativeLibPath.startsWith("/cygdrive/")) {
-    				nativeLibPath = nativeLibPath.replace("/cygdrive/", "");
-    				nativeLibPath = nativeLibPath.replaceFirst("^([a-zA-Z])", "$1:"); // Add colon after drive letter
-    				nativeLibPath = nativeLibPath.replace("/", "\\"); // Convert to Windows backslashes
-    				System.out.println("Converted nativeLibPath = " + nativeLibPath);
+					nativeLibPath = nativeLibPath.replace("/cygdrive/", "");
+					nativeLibPath = nativeLibPath.replaceFirst("^([a-zA-Z])", "$1:"); // Add colon after drive letter
+					nativeLibPath = nativeLibPath.replace("/", "\\"); // Convert to Windows backslashes
+					System.out.println("Converted nativeLibPath = " + nativeLibPath);
 				}
 
-                String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
-                String agentPath = nativeLibPath + "/"
-                   + nativePrefix + "sharedClasses" + nativeExt;
+				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
+				String agentPath = nativeLibPath + "/"
+				   + nativePrefix + "sharedClasses" + nativeExt;
 				FileRef agent = test.env().createFileRef(agentPath);
 				
 				if (!cacheDir.isEmpty()) {
