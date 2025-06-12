@@ -223,12 +223,12 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 					throw new IllegalStateException("NATIVE_TEST_LIBS is not set");
 				}
 				System.out.println("NATIVE_TEST_LIBS = " + nativeLibPath);
-				if (nativeLibPath.startsWith("/cygdrive/")) {
-					nativeLibPath = nativeLibPath.replace("/cygdrive/", "");
-					nativeLibPath = nativeLibPath.replaceFirst("^([a-zA-Z])", "$1:"); // Add colon after drive letter
-					nativeLibPath = nativeLibPath.replace("/", "\\"); // Convert to Windows backslashes
-					System.out.println("Converted nativeLibPath = " + nativeLibPath);
-				}
+				// if (nativeLibPath.startsWith("/cygdrive/")) {
+				// 	nativeLibPath = nativeLibPath.replace("/cygdrive/", "");
+				// 	nativeLibPath = nativeLibPath.replaceFirst("^([a-zA-Z])", "$1:"); // Add colon after drive letter
+				// 	nativeLibPath = nativeLibPath.replace("/", "\\"); // Convert to Windows backslashes
+				// 	System.out.println("Converted nativeLibPath = " + nativeLibPath);
+				// }
 
 				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
 				String agentPath = nativeLibPath + "/"
