@@ -223,15 +223,15 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 					nativePrefix = "";
 					nativeExt = ".dll";
 					nativeLibPath = nativeLibPath.replaceFirst("^/cygdrive/([a-zA-Z])", "$1:");
-					nativeLibPath = nativeLibPath.replace('/', File.pathSeparatorChar);
+					nativeLibPath = nativeLibPath.replace('/', File.separatorChar);
 				} else {
 					nativeExt = ".so";
 				}
 
-				String agentPath = nativeLibPath + File.pathSeparator
+				String agentPath = nativeLibPath + File.separator
 						+ nativePrefix + "sharedClasses" + nativeExt;
                 FileRef agent = test.env().createFileRef(agentPath);
-                
+
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
 				}
