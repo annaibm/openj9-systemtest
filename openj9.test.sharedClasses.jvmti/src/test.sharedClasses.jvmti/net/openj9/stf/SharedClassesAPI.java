@@ -230,7 +230,7 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 
 				String agentPath = nativeLibPath + File.separator
 						+ nativePrefix + "sharedClasses" + nativeExt;
-                FileRef agent = test.env().createFileRef(agentPath);
+				FileRef agent = test.env().createFileRef(agentPath);
 
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
