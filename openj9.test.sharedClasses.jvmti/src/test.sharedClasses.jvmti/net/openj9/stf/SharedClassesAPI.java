@@ -24,6 +24,7 @@ package net.openj9.stf;
 import static net.adoptopenjdk.stf.extensions.core.StfCoreExtension.Echo.ECHO_OFF;
 import static net.adoptopenjdk.stf.extensions.core.StfCoreExtension.Echo.ECHO_ON;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -210,31 +211,27 @@ public class SharedClassesAPI implements SharedClassesPluginInterface {
 							.runClass(SharedClassesCacheChecker.class));
 			} else {
 				// Verify caches using a JVMTI native agent.
-				String nativeExt;
-				if (PlatformFinder.isOSX()) {
-					nativeExt = ".dylib";
-				} else if (PlatformFinder.isWindows()) {
-					nativeExt = ".dll";
-				} else {
-					nativeExt = ".so";
-				}
 				String nativeLibPath = System.getenv("NATIVE_TEST_LIBS");
 				if (nativeLibPath == null || nativeLibPath.isEmpty()) {
 					throw new IllegalStateException("NATIVE_TEST_LIBS is not set");
 				}
-				System.out.println("NATIVE_TEST_LIBS = " + nativeLibPath);
-				if (PlatformFinder.isWindows() && nativeLibPath.startsWith("/cygdrive/")) {
-                    nativeLibPath = nativeLibPath.replace("/cygdrive/", "");
-                    nativeLibPath = nativeLibPath.replaceFirst("^([a-zA-Z])", "$1:"); // Add colon after drive letter
-                    nativeLibPath = nativeLibPath.replace("/", "\\"); // Convert to Windows backslashes
-                    System.out.println("Converted nativeLibPath = " + nativeLibPath);
-                }
+				String nativePrefix = "lib";
+				String nativeExt;
+				if (PlatformFinder.isOSX()) {
+					nativeExt = ".dylib";
+				} else if (PlatformFinder.isWindows()) {
+					nativePrefix = "";
+					nativeExt = ".dll";
+					nativeLibPath = nativeLibPath.replaceFirst("^/cygdrive/([a-zA-Z])", "$1:");
+					nativeLibPath = nativeLibPath.replace('/', File.pathSeparatorChar);
+				} else {
+					nativeExt = ".so";
+				}
 
-				String nativePrefix =  PlatformFinder.isWindows() ? "" : "lib";
-				String agentPath = nativeLibPath + "/"
-				   + nativePrefix + "sharedClasses" + nativeExt;
-				FileRef agent = test.env().createFileRef(agentPath);
-				
+				String agentPath = nativeLibPath + File.pathSeparator
+						+ nativePrefix + "sharedClasses" + nativeExt;
+                FileRef agent = test.env().createFileRef(agentPath);
+                
 				if (!cacheDir.isEmpty()) {
 					cacheDir = "," + cacheDir;
 				}
